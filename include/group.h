@@ -25,6 +25,9 @@ int Q_lt( const Q, const Q );
 unsigned long gcd( long, unsigned long );
 unsigned long lcm( long, unsigned long );
 
+unsigned long N_gcd( unsigned long, unsigned long );
+unsigned long N_lcm( unsigned long, unsigned long );
+
 M M_add( const M, const M );
 M M_sub( const M, const M );
 M M_mul( const M, const M );
