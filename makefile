@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -march=native -std=gnu99 -Ofast
+CFLAGS=-Wall -march=native -std=gnu99 -Ofast -minline-all-stringops
 CFLAGS_DBG=$(CFLAGS) -g -D DBG
 C_FILES=$(shell find src -name "*.c" )
 OBJ=$(patsubst %.c, %.o, $(C_FILES) )
@@ -38,12 +38,12 @@ clean:
 	@echo Compiling and generating debugging object $@
 	@$(CC) $(CFLAGS_DBG) -c -o $@ $<
 
-$(OUTPUT): $(MAIN) $(OBJ)
+$(OUTPUT): $(OBJ)
 	@echo Linking executable $@
-	@$(CC) $(CFLAGS) -o $@ $^
-$(OUTPUT).dbg: $(MAIN) $(OBJ_DBG)
+	@$(CC) $(CFLAGS) -o $@ $(MAIN) $^
+$(OUTPUT).dbg: $(OBJ_DBG)
 	@echo Linking executable $@
-	@$(CC) $(CFLAGS_DBG) -o $@ $^
+	@$(CC) $(CFLAGS_DBG) -o $@ $(MAIN) $^
 
 $(LIB): $(OBJ)
 	@echo Generating dynamic library $@
