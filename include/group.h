@@ -34,6 +34,6 @@ M M_sub( const M, const M );
 M M_mul( const M, const M );
 M M_dot( const Q, const M );
 M M_T( const M );
-Q M_det( const M );
+/* Q M_det( const M ); */
 
 #endif
