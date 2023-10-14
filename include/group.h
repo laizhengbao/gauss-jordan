@@ -12,6 +12,7 @@ typedef struct _M_{
 	Q* A;
 } M;
 
+Q Q_imm( const long, const unsigned long );
 Q Q_add( const Q, const Q );
 Q Q_sub( const Q, const Q );
 Q Q_mul( const Q, const Q );
