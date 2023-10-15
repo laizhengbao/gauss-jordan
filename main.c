@@ -22,11 +22,19 @@ int main( void ){
 				*( A.A + i * n + j ) = tmp;
 			}
 		}
+#ifdef DBG
+		for( register size_t i = 0; i < m * n; i++ ){
+			( i && !( i%n ) ) && fputc( 10, stderr );
+			fprintf( stderr, "%4ld/%4lu ", ( *( A.A + i ) ).n, ( *( A.A + i ) ).d );
+		}
+		fputc( 10, stderr );
+#endif
 		R = gauss_jordan( A );
 		for( register size_t i = 0; i < m * n; i++ ){
-			( i && ! i % n ) && putchar_unlocked( 10 );
+			( i && !( i % n ) ) && putchar_unlocked( 10 );
 			printf( "%4ld/%4lu ", ( *( R.A + i ) ).n, ( *( R.A + i ) ).d );
 		}
+		fputc( 10, stdout );
 		free( A.A );
 		free( R.A );
 	}

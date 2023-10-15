@@ -36,4 +36,11 @@ M M_dot( const Q, const M );
 M M_T( const M );
 /* Q M_det( const M ); */
 
+#ifdef DBG
+#include <stdio.h>
+
+#define Q_print( a ) fprintf( stderr, "%ld/%lu ", (a).n, (a).d )
+
+#endif
+
 #endif

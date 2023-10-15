@@ -5,13 +5,15 @@
 	b ^= a;\
 	a ^= b;\
 }
+#define nonzero( a ) ( ( a )?a:1L )
 
 unsigned long gcd( long _, unsigned long __ ){
 
 	register unsigned long a, b;
 
 	a = ( _ < 0 ) ? ~_ + 1 : _;
-	b = __;
+	a = nonzero( a );
+	b = nonzero( __ );
 
 	while( a && b ){
 		if( a < b ){
@@ -25,7 +27,7 @@ unsigned long gcd( long _, unsigned long __ ){
 }
 
 unsigned long N_gcd( unsigned long _, unsigned long __ ){
-	register unsigned long a = _, b = __;
+	register unsigned long a = nonzero( _ ), b = nonzero( __ );
 
 	while( a && b ){
 		if( a < b ){

@@ -43,9 +43,22 @@ M M_mul( const M a, const M b ){
 		( *( data + i ) ).b = malloc( sizeof( *( *( data + i ) ).b ) * *( a.shape + 1 ) );
 		( *( data + i ) ).n = *( a.shape + 1 );
 		memcpy( ( *( data + i ) ).a, a.A + ( i / *( a.shape + 1 ) ), ( *( data + i ) ).n );
-		for( register size_t j = i % ( *( data + i ) ).n, k = 0; j < *( b.shape + 0 ) * *( b.shape + i ); j += *( b.shape + 1 ), k++ ){
+		for( register size_t j = i % ( *( data + i ) ).n, k = 0; j < *( b.shape + 0 ) * *( b.shape + 1 ); j += *( b.shape + 1 ), k++ ){
 			*( ( *( data + i ) ).b + k ) = *( b.A + j );
 		}
+#ifdef DBG
+		fprintf( stderr, "data a:\n" );
+		for( register size_t j = 0; j < ( *( data +i ) ).n; j++ ){
+			Q_print( *( ( *( data + i ) ).a + j ) );
+		}
+		fputc( 10, stderr );
+		fprintf( stderr, "data b:\n" );
+		pthread_create( threads + i, NULL, mul, data + i );
+		for( register size_t j = 0; j < ( *( data +i ) ).n; j++ ){
+			Q_print( *( ( *( data + i ) ).b + j ) );
+		}
+		fputc( 10, stderr );
+#endif
 		pthread_create( threads + i, NULL, mul, data + i );
 	}
 
@@ -68,12 +81,29 @@ void* mul( void* _ ){
 	register Q* b = ( *( struct P* )_ ).b;
 	register size_t n = ( *( struct P* )_ ).n;
 	register Q* ret = malloc( sizeof( *ret ) );
+
+#ifdef DBG
+	register Q tmp;
+#endif
 	
-	( *ret ).n = 0;
-	( *ret ).d = 1;
+	*ret = Q_imm( 0L, 1L );
 
 	for( register size_t i = 0; i < n; i++ ){
+#ifdef DBG
+		/*
+		fprintf( stderr, "matrix mul " );
+		Q_print( *( a + i ) );
+		Q_print( *( b + i ) );
+		Q_print( Q_mul( *( a + i ), *( b + i ) ) );
+		fputc( 10, stderr );
+		*/
+#endif
+#ifndef DBG
 		*ret = Q_add( *ret, Q_mul( *( a + i ), *( b + i ) ) );
+#else
+		tmp = Q_mul( *( a + i ), *( b + i ) );
+		*ret = Q_add( *ret, tmp );
+#endif
 	}
 
 	return ret;

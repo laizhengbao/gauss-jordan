@@ -38,12 +38,12 @@ clean:
 	@echo Compiling and generating debugging object $@
 	@$(CC) $(CFLAGS_DBG) -c -o $@ $<
 
-$(OUTPUT): $(OBJ)
+$(OUTPUT): $(MAIN) $(OBJ)
 	@echo Linking executable $@
-	@$(CC) $(CFLAGS) -o $@ $(MAIN) $^
-$(OUTPUT).dbg: $(OBJ_DBG)
+	@$(CC) $(CFLAGS) -o $@ $^
+$(OUTPUT).dbg: $(MAIN) $(OBJ_DBG)
 	@echo Linking executable $@
-	@$(CC) $(CFLAGS_DBG) -o $@ $(MAIN) $^
+	@$(CC) $(CFLAGS_DBG) -o $@ $^
 
 $(LIB): $(OBJ)
 	@echo Generating dynamic library $@
