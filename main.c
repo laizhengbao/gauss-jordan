@@ -23,11 +23,13 @@ int main( void ){
 			}
 		}
 #ifdef DBG
+		/*
 		for( register size_t i = 0; i < m * n; i++ ){
 			( i && !( i%n ) ) && fputc( 10, stderr );
 			fprintf( stderr, "%4ld/%4lu ", ( *( A.A + i ) ).n, ( *( A.A + i ) ).d );
 		}
 		fputc( 10, stderr );
+		*/
 #endif
 		R = gauss_jordan( A );
 		for( register size_t i = 0; i < m * n; i++ ){
