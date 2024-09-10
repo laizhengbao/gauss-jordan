@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -march=native -std=gnu99 -Ofast -minline-all-stringops -fopenmp
+CFLAGS=-Wall -march=native -std=gnu99 -Ofast -minline-all-stringops -fopenmp -lm
 CFLAGS_DBG=$(CFLAGS) -g -D DBG
 C_FILES=$(shell find src -name "*.c" )
 OBJ=$(patsubst %.c, %.o, $(C_FILES) )
