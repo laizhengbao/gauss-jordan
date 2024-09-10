@@ -3,12 +3,12 @@
 #include <pthread.h>
 #include <immintrin.h>
 
-struct P{
-	Q a;
-	Q b;
-};
-
 void* add( void* );
+
+struct _DATA {
+	R a;
+	R b;
+};
 
 M M_add( const M a, const M b ){
 	register M ret = {
@@ -17,18 +17,20 @@ M M_add( const M a, const M b ){
 	};
 	register size_t thread;
 	register pthread_t* threads;
-	register struct P* data;
+	register struct _DATA* data;
 
-	Q* res;
+	R* res;
 
-
-	if( *( a.shape + 0) - *( b.shape + 0 ) || *( a.shape + 0 ) - *( b.shape + 1 ) ){
+	if( *( a.shape + 0) - *( b.shape + 0 ) || *( a.shape + 1 ) - *( b.shape + 1 ) ){
 		goto RET;
 	}
 
 	thread = *( a.shape + 0 ) * *( a.shape + 1 );
 	threads = malloc( sizeof( *threads ) * thread );
 	data = malloc( sizeof( *data ) * thread );
+	res = malloc( sizeof( *res ) );
+	ret = a;
+	ret.A = malloc( sizeof( *ret.A ) * thread );
 
 	for( register size_t i = 0; i < thread; i++ ){
 		( *( data + i ) ).a = *( a.A + i );
@@ -39,7 +41,7 @@ M M_add( const M a, const M b ){
 
 	for( register size_t i = 0; i < thread; i++ ){
 		pthread_join( *( threads + i ), ( void* )&res );
-		*( a.A + i ) = *res;
+		*( ret.A + i ) = *res;
 		free( res );
 	}
 
@@ -51,7 +53,7 @@ RET:
 }
 
 void* add( void* a ){
-	register Q* ret = malloc( sizeof( *ret ) );
-	*ret = Q_add( ( *( struct P* )a ).a, ( *( struct P* )a ).b );
+	register R* ret = malloc( sizeof( *ret ) );
+	*ret = ( *( struct _DATA * )a ).a + ( *( struct _DATA * )a ).b;
 	return ret;
 }
