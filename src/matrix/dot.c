@@ -3,13 +3,13 @@
 #include <pthread.h>
 
 struct P{
-	Q a;
-	Q b;
+	R a;
+	R b;
 };
 
 void* dot( void* );
 
-M M_dot( const Q a, const M b ){
+M M_dot( const R a, const M b ){
 	register M ret = {
 		.shape = {
 			*( b.shape + 0 ),
@@ -25,7 +25,7 @@ M M_dot( const Q a, const M b ){
 
 	register size_t i;
 
-	Q* res;
+	R* res;
 
 	thread = *( b.shape + 0 ) * *( b.shape + 1 );
 
@@ -52,12 +52,12 @@ M M_dot( const Q a, const M b ){
 }
 
 void* dot( void* _ ){
-	register Q a = ( *( struct P* )_ ).a;
-	register Q b = ( *( struct P* )_ ).b;
+	register R a = ( *( struct P* )_ ).a;
+	register R b = ( *( struct P* )_ ).b;
 
-	register Q* ret = malloc( sizeof( *ret ) );
+	register R* ret = malloc( sizeof( *ret ) );
 
-	*ret = Q_mul( a, b );
+	*ret = a * b;
 
 	return ret;
 }
